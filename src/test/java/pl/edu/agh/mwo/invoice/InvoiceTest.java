@@ -7,7 +7,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import pl.edu.agh.mwo.invoice.Invoice;
 import pl.edu.agh.mwo.invoice.product.DairyProduct;
 import pl.edu.agh.mwo.invoice.product.OtherProduct;
 import pl.edu.agh.mwo.invoice.product.Product;
@@ -124,5 +123,12 @@ public class InvoiceTest {
     @Test(expected = IllegalArgumentException.class)
     public void testAddingNullProduct() {
         invoice.addProduct(null);
+    }
+
+    @Test
+    public void testInvoiceNumberIsUnique() {
+        Invoice invoice1 = new Invoice();
+        Invoice invoice2 = new Invoice();
+        Assert.assertNotEquals(invoice1.getInvoiceNumber(), invoice2.getInvoiceNumber());
     }
 }

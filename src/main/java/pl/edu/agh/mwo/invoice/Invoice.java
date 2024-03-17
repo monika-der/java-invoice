@@ -3,11 +3,18 @@ package pl.edu.agh.mwo.invoice;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
-    private Map<Product, Integer> products = new HashMap<Product, Integer>();
+    private final Map<Product, Integer> products = new HashMap<>();
+    private static final AtomicInteger count = new AtomicInteger(0);
+    private final int invoiceNumber;
+
+    public Invoice() {
+        invoiceNumber = count.incrementAndGet();
+    }
 
     public void addProduct(Product product) {
         addProduct(product, 1);
@@ -40,5 +47,9 @@ public class Invoice {
             totalGross = totalGross.add(product.getPriceWithTax().multiply(quantity));
         }
         return totalGross;
+    }
+
+    public int getInvoiceNumber() {
+        return invoiceNumber;
     }
 }
