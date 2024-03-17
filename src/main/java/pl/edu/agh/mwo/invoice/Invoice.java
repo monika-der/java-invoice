@@ -52,4 +52,18 @@ public class Invoice {
     public int getInvoiceNumber() {
         return invoiceNumber;
     }
+
+    public String getInvoiceDetails() {
+        StringBuilder details = new StringBuilder();
+        details.append("Invoice Number: ").append(getInvoiceNumber()).append("\n");
+        for (Map.Entry<Product, Integer> entry : products.entrySet()) {
+            Product product = entry.getKey();
+            Integer quantity = entry.getValue();
+            details.append(product.getName()).append(", ")
+                    .append(quantity).append(", ")
+                    .append(product.getPrice()).append("\n");
+        }
+        details.append("Number of items: ").append(products.size());
+        return details.toString();
+    }
 }

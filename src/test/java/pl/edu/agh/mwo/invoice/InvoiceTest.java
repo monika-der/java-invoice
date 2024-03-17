@@ -131,4 +131,22 @@ public class InvoiceTest {
         Invoice invoice2 = new Invoice();
         Assert.assertNotEquals(invoice1.getInvoiceNumber(), invoice2.getInvoiceNumber());
     }
+
+    @Test
+    public void testInvoiceNumberIsGreaterThanZero() {
+        Assert.assertTrue(invoice.getInvoiceNumber() > 0);
+    }
+
+    @Test
+    public void testInvoiceDetails() {
+        Product product1 = new TaxFreeProduct("Product1", new BigDecimal("10"));
+        Product product2 = new TaxFreeProduct("Product2", new BigDecimal("20"));
+        invoice.addProduct(product1, 2);
+        invoice.addProduct(product2, 3);
+        String expectedDetails = "Invoice Number: " + invoice.getInvoiceNumber() + "\n"
+                + "Product1, 2, 10\n"
+                + "Product2, 3, 20\n"
+                + "Number of items: 2";
+        Assert.assertEquals(expectedDetails, invoice.getInvoiceDetails());
+    }
 }
