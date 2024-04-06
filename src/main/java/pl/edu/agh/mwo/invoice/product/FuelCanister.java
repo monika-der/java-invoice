@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 public class FuelCanister extends Product {
     private static final BigDecimal EXCISE_DUTY = new BigDecimal("5.56");
+    private static final LocalDate EXCISE_DUTY_DATE =
+            LocalDate.of(LocalDate.now().getYear(), 1, 26);
 
     public FuelCanister(String name, BigDecimal price) {
         super(name, price, EXCISE_DUTY);
@@ -12,7 +14,7 @@ public class FuelCanister extends Product {
 
     @Override
     public BigDecimal getPriceWithTax() {
-        if (LocalDate.now().equals(LocalDate.of(LocalDate.now().getYear(), 1, 26))) {
+        if (LocalDate.now().equals(EXCISE_DUTY_DATE)) {
             return this.getPrice();
         } else {
             return super.getPrice().add(EXCISE_DUTY);
