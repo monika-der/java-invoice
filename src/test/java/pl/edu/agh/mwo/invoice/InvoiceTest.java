@@ -7,10 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import pl.edu.agh.mwo.invoice.product.DairyProduct;
-import pl.edu.agh.mwo.invoice.product.OtherProduct;
-import pl.edu.agh.mwo.invoice.product.Product;
-import pl.edu.agh.mwo.invoice.product.TaxFreeProduct;
+import pl.edu.agh.mwo.invoice.product.*;
 
 public class InvoiceTest {
     private Invoice invoice;
@@ -148,5 +145,28 @@ public class InvoiceTest {
                 + "Product2, 3, 20\n"
                 + "Number of items: 2";
         Assert.assertEquals(expectedDetails, invoice.getInvoiceDetails());
+    }
+
+    @Test
+    public void testAddingSameProductTwiceIncreasesQuantity() {
+        Product product = new TaxFreeProduct("Product1", new BigDecimal("10"));
+        invoice.addProduct(product);
+        invoice.addProduct(product);
+        int quantity = invoice.products.size();
+        Assert.assertEquals(1, quantity);
+    }
+
+    @Test
+    public void testAlcoholExciseDuty() {
+        Product product = new BottleOfWine("Wino", new BigDecimal("10"));
+        invoice.addProduct(product);
+        Assert.assertThat(new BigDecimal("15.56"), Matchers.comparesEqualTo(invoice.getGrossTotal()));
+    }
+
+    @Test
+    public void testFuelExciseDuty() {
+        Product product = new FuelCanister("Paliwo", new BigDecimal("10"));
+        invoice.addProduct(product);
+        Assert.assertThat(new BigDecimal("15.56"), Matchers.comparesEqualTo(invoice.getGrossTotal()));
     }
 }

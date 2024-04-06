@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
-    private final Map<Product, Integer> products = new HashMap<>();
+    final Map<Product, Integer> products = new HashMap<>();
     private static final AtomicInteger count = new AtomicInteger(0);
     private final int invoiceNumber;
 
@@ -23,8 +23,11 @@ public class Invoice {
     public void addProduct(Product product, Integer quantity) {
         if (product == null || quantity <= 0) {
             throw new IllegalArgumentException();
+        } else if (products.containsKey(product)) {
+            products.put(product, products.get(product) + quantity);
+        } else {
+            products.put(product, quantity);
         }
-        products.put(product, quantity);
     }
 
     public BigDecimal getNetTotal() {
